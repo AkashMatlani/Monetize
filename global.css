@@ -61,4 +61,20 @@
   .tabs-glyph {
     @apply size-6;
   }
+
+  .home-header {
+    @apply mb-2.5 flex-row items-center justify-between;
+  }
+
+  .home-user {
+    @apply flex-row items-center;
+  }
+
+  .home-avatar {
+    @apply size-16 rounded-full;
+  }
+
+  .home-user-name {
+    @apply ml-4 text-2xl font-sans-bold text-primary;
+  }
 }
