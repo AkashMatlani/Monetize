@@ -1,15 +1,19 @@
+import images from '@/constants/images';
 import '@/global.css';
 import { styled } from "nativewind";
-import { Text } from "react-native";
+import { Image, Text, View } from 'react-native';
 import { SafeAreaView as RNSafeAreaView } from 'react-native-safe-area-context';
 
 const SafeAreaView = styled(RNSafeAreaView);
 export default function App() {
   return (
     <SafeAreaView className="flex-1 bg-background p-5">
-      <Text className="text-7xl font-sans-extrabold">
-        Home
-      </Text>
+     <View className='home-header'>
+      <View className='home-user'>
+        <Image source={images.avatar} className='home-avatar'/>
+        <Text className='home-user-name'>Akash Matlani</Text>
+      </View>
+     </View>
     </SafeAreaView>
   );
 }
