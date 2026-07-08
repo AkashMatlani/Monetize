@@ -1,3 +1,4 @@
+import ListHeading from '@/components/ListHeading';
 import { icons } from '@/constants/icons';
 import images from '@/constants/images';
 import '@/global.css';
@@ -25,6 +26,12 @@ export default function App() {
           <Text className='home-balance-amount'>{formatCurrency(2489.48)}</Text>
           <Text className='home-balance-date'>{dayjs("2026-03-18T09:00:00.000Z").format('MM/DD')}</Text>
         </View>
+      </View>
+      <View>
+        <ListHeading title="Upcoming"/>
+      </View>
+       <View>
+        <ListHeading title="All Subscption"/>
       </View>
     </SafeAreaView>
   );
