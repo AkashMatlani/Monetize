@@ -1,11 +1,13 @@
 import ListHeading from '@/components/ListHeading';
+import UpcomingSubscrptionCard from '@/components/UpcomingSubscrptionCard';
+import { UPCOMING_SUBSCRPTIONS } from '@/constants/data';
 import { icons } from '@/constants/icons';
 import images from '@/constants/images';
 import '@/global.css';
 import { formatCurrency } from '@/lib/utills';
 import dayjs from "dayjs";
 import { styled } from "nativewind";
-import { Image, Text, View } from 'react-native';
+import { FlatList, Image, Text, View } from 'react-native';
 import { SafeAreaView as RNSafeAreaView } from 'react-native-safe-area-context';
 
 const SafeAreaView = styled(RNSafeAreaView);
@@ -17,7 +19,7 @@ export default function App() {
           <Image source={images.avatar} className='home-avatar' />
           <Text className='home-user-name'>Akash Matlani</Text>
         </View>
-        <Image source={icons.add} className='home-add-icon'/>
+        <Image source={icons.add} className='home-add-icon' />
       </View>
       <View className='home-balance-card'>
         <Text className='home-balance-label'>Balance</Text>
@@ -28,10 +30,19 @@ export default function App() {
         </View>
       </View>
       <View>
-        <ListHeading title="Upcoming"/>
+        <ListHeading title="Upcoming" />
+        <FlatList data={UPCOMING_SUBSCRPTIONS}
+         renderItem={({item})=>(<UpcomingSubscrptionCard {...item}/>)}
+         keyExtractor={(item) => item.id}
+         horizontal
+         showsHorizontalScrollIndicator={false}
+         ListEmptyComponent={<Text className='home-empty-state'>No upcoming subscriptions</Text>}
+         />
+       
+
       </View>
-       <View>
-        <ListHeading title="All Subscption"/>
+      <View>
+        <ListHeading title="All Subscption" />
       </View>
     </SafeAreaView>
   );
