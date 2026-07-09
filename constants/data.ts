@@ -8,3 +8,22 @@ export const tabs = [
     { name: 'settings', title: "Settings", icon: icons.setting },
 
 ];
+
+export const UPCOMING_SUBSCRPTIONS: UpcomingSubscription[] = [
+ {
+        id: "spotify",
+        icon: icons.spotify,
+        name: "Spotify",
+        price: 5.99,
+        currency: "USD",
+        daysLeft: 2,
+    },
+       {
+        id: "notion",
+        icon: icons.notion,
+        name: "Notion",
+        price: 12.0,
+        currency: "USD",
+        daysLeft: 4,
+    },
+]
