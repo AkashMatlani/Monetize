@@ -139,4 +139,37 @@
   .home-empty-state {
     @apply py-4 text-sm font-sans-medium text-black/60;
   }
+  .sub-card {
+    @apply rounded-2xl border border-border p-4;
+  }
+  .sub-head {
+    @apply flex-row items-center py-2;
+  }
+  .sub-main {
+    @apply min-w-0 flex-1 flex-row items-center gap-3;
+  }
+  .sub-icon {
+    @apply size-16 rounded-lg;
+  }
+  .sub-copy {
+    @apply min-w-0 flex-1;
+  }
+  .sub-title {
+    @apply mb-1 text-lg font-sans-bold text-primary;
+  }
+  .sub-price-box {
+    @apply ml-3 shrink-0 items-end;
+  }
+  .sub-price {
+    @apply mb-1 text-lg font-sans-bold text-primary;
+  }
+  .sub-billing {
+    @apply text-sm font-sans-medium text-muted-foreground;
+  }
+  .sub-meta {
+    @apply text-sm font-sans-semibold text-muted-foreground;
+  }
+  .sub-card-expanded {
+    @apply bg-subscription;
+  }
 }

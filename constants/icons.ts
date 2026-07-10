@@ -1,6 +1,8 @@
 
 import activity from "@/assets/icons/activity.png";
 import add from "@/assets/icons/add.png";
+import adobe from "@/assets/icons/adobe.png";
+import github from "@/assets/icons/github.png";
 import home from "@/assets/icons/home.png";
 import notion from "@/assets/icons/notion.png";
 import setting from "@/assets/icons/setting.png";
@@ -14,7 +16,9 @@ export const icons = {
     setting,
     add,
     spotify,
-    notion
+    notion,
+    adobe,
+    github,
 } as const;
 
 export type IconKey = keyof typeof icons;
