@@ -1,7 +1,6 @@
 import ListHeading from '@/components/ListHeading';
 import SubscrptionCard from '@/components/SubscrptionCard';
-import UpcomingSubscrptionCard from '@/components/UpcomingSubscrptionCard';
-import { HOME_SUBSCRIPTIONS, UPCOMING_SUBSCRPTIONS } from '@/constants/data';
+import { HOME_SUBSCRIPTIONS } from '@/constants/data';
 import { icons } from '@/constants/icons';
 import images from '@/constants/images';
 import '@/global.css';
@@ -9,7 +8,7 @@ import { formatCurrency } from '@/lib/utills';
 import dayjs from "dayjs";
 import { styled } from "nativewind";
 import { useState } from 'react';
-import { FlatList, Image, Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { SafeAreaView as RNSafeAreaView } from 'react-native-safe-area-context';
 
 const SafeAreaView = styled(RNSafeAreaView);
@@ -33,7 +32,7 @@ export default function App() {
           <Text className='home-balance-date'>{dayjs("2026-03-18T09:00:00.000Z").format('MM/DD')}</Text>
         </View>
       </View>
-      <View>
+      {/* <View>
         <ListHeading title="Upcoming" />
         <FlatList data={UPCOMING_SUBSCRPTIONS}
           renderItem={({ item }) => (<UpcomingSubscrptionCard {...item} />)}
@@ -43,11 +42,11 @@ export default function App() {
           ListEmptyComponent={<Text className='home-empty-state'>No upcoming renewals yet.</Text>}
         />
 
-      </View>
+      </View> */}
       <View>
         <ListHeading title="All Subscption" />
         <SubscrptionCard
-         {...UPCOMING_SUBSCRPTIONS[0]}
+         {...HOME_SUBSCRIPTIONS[0]}
          expanded={expandedSubscrptionId===HOME_SUBSCRIPTIONS[0].id}
          onPress={()=>setExpandedSubscrptionId((currentId)=>currentId===HOME_SUBSCRIPTIONS[0].id ? null : HOME_SUBSCRIPTIONS[0].id)}
          />

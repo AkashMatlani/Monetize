@@ -172,4 +172,22 @@
   .sub-card-expanded {
     @apply bg-subscription;
   }
+  .sub-body {
+    @apply mt-6 gap-4;
+  }
+  .sub-details {
+    @apply gap-6;
+  }
+  .sub-row {
+    @apply flex-row items-center justify-between gap-3;
+  }
+  .sub-row-copy {
+    @apply min-w-0 flex-1 flex-row items-center gap-2;
+  }
+  .sub-label {
+    @apply shrink-0 text-base font-sans-medium text-muted-foreground;
+  }
+  .sub-value {
+    @apply flex-1 font-sans-bold text-primary;
+  }
 }
