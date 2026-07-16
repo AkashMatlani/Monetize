@@ -22,11 +22,11 @@ const signIn = () => {
               </View>
               <View>
                 <Text className='auth-wordmark'>Recurrly</Text>
-                <Text className='auth-wordmark-sub'>SUBSCRPTION</Text>
+                <Text className='auth-wordmark-sub'>SUBSCRIPTION</Text>
               </View>
             </View>
             <Text className='auth-title'>Welcome back</Text>
-            <Text className='auth-subtitle'>Sign in to continue your subscrption</Text>
+            <Text className='auth-subtitle'>Sign in to continue your subscription</Text>
           </View>
         </ScrollView>
 
