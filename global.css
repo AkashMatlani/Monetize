@@ -223,4 +223,25 @@
   .auth-subtitle {
     @apply mt-2 max-w-[320px] text-center text-base font-sans-medium text-muted-foreground;
   }
+  .auth-card {
+    @apply mt-8 rounded-3xl border border-border bg-card p-5;
+  }
+  .auth-form {
+    @apply gap-4;
+  }
+  .auth-filed {
+    @apply gap-2;
+  }
+  .auth-label {
+    @apply text-sm font-sans-semibold  text-primary;
+  }
+  .auth-input {
+    @apply rounded-2xl border border-border bg-background px-4 py-4 text-base font-sans-medium text-primary;
+  }
+  .auth-input-error {
+    @apply border-destructive;
+  }
+  .auth-error {
+    @apply text-xs font-sans-medium text-destructive;
+  }
 }
