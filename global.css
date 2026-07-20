@@ -229,7 +229,7 @@
   .auth-form {
     @apply gap-4;
   }
-  .auth-filed {
+  .auth-field {
     @apply gap-2;
   }
   .auth-label {
