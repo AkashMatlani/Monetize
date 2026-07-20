@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const signIn = () => {
+const SignIn = () => {
   const { signIn, errors, fetchStatus } = useSignIn();
 
   const [emailAddress, setEmailAddress] = useState('');
@@ -58,7 +58,7 @@ const signIn = () => {
                 {emailTouched && !emailValid && (
                   <Text className='auth-error'>Please enter a valid email address</Text>
                 )}
-                {errors.fields.identifier && (
+                {errors?.fields?.identifier &&(
                   <Text className='auth-error'>{errors.fields.identifier.message}</Text>
                 )}
               </View>
