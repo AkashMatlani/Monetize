@@ -84,7 +84,7 @@ const SignIn = () => {
                   </Text>
                 )}
 
-                {errors.fields.password && (
+                {errors?.fields?.password && (
                   <Text className='auth-error'>{errors.fields.password.message}</Text>
                 )}
               </View>
