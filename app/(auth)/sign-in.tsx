@@ -7,12 +7,15 @@ const SignIn = () => {
   const { signIn, errors, fetchStatus } = useSignIn();
 
   const [emailAddress, setEmailAddress] = useState('');
+  const [password, setPassword] = useState('');
 
   //client side validation
   const emailValid = emailAddress.length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress);
-
+  const passwordValid = password.length > 0;
   //validation state
   const [emailTouched, setEmailTouched] = useState(false);
+  const [passWordTouched, setPassWordTouched] = useState(false);
+
   return (
     <SafeAreaView className='auth-safe-area'>
       <KeyboardAvoidingView
@@ -58,8 +61,31 @@ const SignIn = () => {
                 {emailTouched && !emailValid && (
                   <Text className='auth-error'>Please enter a valid email address</Text>
                 )}
-                {errors?.fields?.identifier &&(
+                {errors?.fields?.identifier && (
                   <Text className='auth-error'>{errors.fields.identifier.message}</Text>
+                )}
+              </View>
+
+              <View className='auth-field'>
+                <Text className='auth-label'>Password</Text>
+                <TextInput
+                  className={`auth-input ${passWordTouched && !passwordValid && 'auth-input-error'}`}
+                  value={password}
+                  placeholderTextColor="rgba(0,0,0,0.4)"
+                  placeholder="Enter your password"
+                  secureTextEntry
+                  onChangeText={setPassword}
+                  onBlur={() => setPassWordTouched(true)}
+                  autoComplete='password'
+                />
+                {passWordTouched && !passwordValid && (
+                  <Text className='auth-error'>
+                    Password is required
+                  </Text>
+                )}
+
+                {errors?.fields?.password && (
+                  <Text className='auth-error'>{errors.fields.password.message}</Text>
                 )}
               </View>
               <View>
@@ -73,4 +99,4 @@ const SignIn = () => {
   )
 }
 
-export default signIn
+export default SignIn
