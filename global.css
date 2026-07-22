@@ -244,4 +244,22 @@
   .auth-error {
     @apply text-xs font-sans-medium text-destructive;
   }
+  .auth-button {
+    @apply mt-1 items-center rounded-2xl bg-accent py-4;
+  }
+  .auth-button-disabled {
+    @apply bg-accent/45;
+  }
+  .auth-button-text {
+    @apply text-base font-sans-bold text-primary;
+  }
+  .auth-link-row {
+    @apply mt-5 flex-row items-center justify-center gap-1;
+  }
+  .auth-link-copy {
+    @apply text-sm font-sans-medium text-muted-foreground;
+  }
+  .auth-link {
+    @apply text-sm font-sans-bold text-accent;
+  }
 }

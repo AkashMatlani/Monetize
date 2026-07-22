@@ -1,6 +1,7 @@
 import { useSignIn } from '@clerk/expo';
+import { Link } from 'expo-router';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SignIn = () => {
@@ -15,6 +16,7 @@ const SignIn = () => {
   //validation state
   const [emailTouched, setEmailTouched] = useState(false);
   const [passWordTouched, setPassWordTouched] = useState(false);
+  const formValid = emailAddress.length > 0 && password.length > 0 && emailValid;
 
   return (
     <SafeAreaView className='auth-safe-area'>
@@ -87,13 +89,28 @@ const SignIn = () => {
                 {errors?.fields?.password && (
                   <Text className='auth-error'>{errors.fields.password.message}</Text>
                 )}
+                
+                <Pressable
+                  className={`auth-button ${(!formValid || fetchStatus === "fetching") && 'auth-button-disabled'}`}
+                  disabled={!formValid || fetchStatus === "fetching"}>
+                  <Text className='auth-button-text'>
+                    {fetchStatus === "fetching" ? 'Signing In...' : 'Sign in'}
+                  </Text>
+                </Pressable>
               </View>
-              <View>
-              </View>
+            </View>
+
+            {/* Sign-up Link */}
+            <View className='auth-link-row'>
+              <Text className='auth-link-copy'>Don't have an account?</Text>
+              <Link href="/(auth)/sign-up" asChild>
+                <Pressable>
+                  <Text className='auth-link'>Create Account</Text>
+                </Pressable>
+              </Link>
             </View>
           </View>
         </ScrollView>
-
       </KeyboardAvoidingView>
     </SafeAreaView>
   )
