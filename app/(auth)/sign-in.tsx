@@ -162,7 +162,8 @@ const SignIn = () => {
 
                 <Pressable
                   className={`auth-button ${(!formValid || fetchStatus === "fetching") && 'auth-button-disabled'}`}
-                  disabled={!formValid || fetchStatus === "fetching"}>
+                  disabled={!formValid || fetchStatus === "fetching"}
+                  onPress={handleSubmit}>
                   <Text className='auth-button-text'>
                     {fetchStatus === "fetching" ? 'Signing In...' : 'Sign in'}
                   </Text>
