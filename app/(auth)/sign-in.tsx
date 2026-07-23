@@ -1,5 +1,6 @@
 import { useSignIn } from '@clerk/expo';
-import { Link } from 'expo-router';
+import { Href, Link, useRouter } from 'expo-router';
+import { usePostHog } from 'posthog-react-native';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -17,6 +18,75 @@ const SignIn = () => {
   const [emailTouched, setEmailTouched] = useState(false);
   const [passWordTouched, setPassWordTouched] = useState(false);
   const formValid = emailAddress.length > 0 && password.length > 0 && emailValid;
+  const posthog = usePostHog();
+  const router = useRouter();
+
+  const handleSubmit = async () => {
+    if (!formValid) return;
+
+    const { error } = await signIn.password({
+      emailAddress,
+      password
+    });
+
+    if (error) {
+      console.error(JSON.stringify(error, null, 2));
+      posthog.capture('user_sign_in_failed', {
+        error_message: error.message,
+      });
+      return;
+    }
+
+    if (signIn.status === "complete") {
+      await signIn.finalize({
+        navigate: ({ session, decorateUrl }) => {
+          if (session?.currentTask) {
+            console.log(session?.currentTask);
+            return;
+          }
+
+          posthog.identify(emailAddress, {
+            $set: { email: emailAddress },
+            $set_once: { first_sign_in_date: new Date().toISOString() },
+          });
+          posthog.capture("user_signed_in", { email: emailAddress });
+
+          const url = decorateUrl("/(tabs)");
+
+          if (url.startsWith('http')) {
+            if (typeof window !== "undefined" && window.location) {
+              window.location.href = url;
+            }
+            else {
+              router.replace("/(tabs)" as Href)
+            }
+          }
+          else {
+            router.replace(url as Href)
+          }
+        }
+      });
+    }
+
+    else if (signIn.status === "needs_second_factor") {
+      console.log('MFA required')
+    }
+    else if (signIn.status === "needs_client_trust") {
+      //send email code for client trust verification
+
+      const emaildCodeFactor = signIn.supportedSecondFactors.find(
+        (factor) => factor.strategy === "email_code"
+      );
+
+      if (emaildCodeFactor) {
+        await signIn.mfa.sendEmailCode();
+      }
+
+    }
+    else {
+      console.error("Sign-in attempt not complete:", signIn);
+    }
+  };
 
   return (
     <SafeAreaView className='auth-safe-area'>
@@ -89,7 +159,7 @@ const SignIn = () => {
                 {errors?.fields?.password && (
                   <Text className='auth-error'>{errors.fields.password.message}</Text>
                 )}
-                
+
                 <Pressable
                   className={`auth-button ${(!formValid || fetchStatus === "fetching") && 'auth-button-disabled'}`}
                   disabled={!formValid || fetchStatus === "fetching"}>
