@@ -54,7 +54,7 @@ const SignUp = () => {
             autoComplete='password-new'
           ></TextInput>
           {passwordTouched && !passwordValid && (
-            <Text className='auth-error'>Password must be a 8 characters</Text>
+            <Text className='auth-error'>Password must be at least 8 characters</Text>
           )}
           {errors.fields.password && (
             <Text className='auth-error'>{errors.fields.password.message}</Text>
