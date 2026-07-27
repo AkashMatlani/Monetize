@@ -262,4 +262,7 @@
   .auth-link {
     @apply text-sm font-sans-bold text-accent;
   }
+  .auth-helper {
+    @apply text-sm font-sans-medium text-muted-foreground;
+  }
 }

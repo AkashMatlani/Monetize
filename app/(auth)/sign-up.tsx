@@ -7,12 +7,15 @@ const SignUp = () => {
   const { signUp, errors, fetchStatus } = useSignUp();
 
   const [emailAddress, setEmailAddress] = useState('');
+  const [password, setPassword] = useState('');
 
   // Validation states
   const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
 
   // Client-side validation
   const emailValid = emailAddress.length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress);
+  const passwordValid = password.length === 0 || password.length >= 8;
   // Signup form
   return (
     <View className='auth-card'>
@@ -35,6 +38,29 @@ const SignUp = () => {
           )}
           {errors.fields.emailAddress && (
             <Text className='auth-error'>{errors.fields.emailAddress.message}</Text>
+          )}
+        </View>
+
+        <View className='auth-field'>
+          <Text className='auth-label'>Password</Text>
+          <TextInput
+            className={`auth-input ${passwordTouched && !passwordValid && 'auth-input-error'}`}
+            value={password}
+            onChangeText={setPassword}
+            placeholder='Create a strong password'
+            placeholderTextColor='rgba(0,0,0,0.4)'
+            secureTextEntry
+            onBlur={() => setPasswordTouched(true)}
+            autoComplete='password-new'
+          ></TextInput>
+          {passwordTouched && !passwordValid && (
+            <Text className='auth-error'>Password must be at least 8 characters</Text>
+          )}
+          {errors.fields.password && (
+            <Text className='auth-error'>{errors.fields.password.message}</Text>
+          )}
+          {!passwordTouched && (
+            <Text className='auth-helper'>Minimum 8 characters required</Text>
           )}
         </View>
       </View>
