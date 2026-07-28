@@ -1,8 +1,11 @@
 import { useSignUp } from '@clerk/expo';
+import { usePostHog } from 'posthog-react-native';
 import React, { useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Pressable, Text, TextInput, View } from 'react-native';
 
 const SignUp = () => {
+
+  const posthog = usePostHog();
 
   const { signUp, errors, fetchStatus } = useSignUp();
 
@@ -16,6 +19,31 @@ const SignUp = () => {
   // Client-side validation
   const emailValid = emailAddress.length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress);
   const passwordValid = password.length === 0 || password.length >= 8;
+
+  const formValid = emailAddress.length >= 0 && password.length >= 8 && emailValid;
+
+  const handleSubmit = async () => {
+
+    if (!formValid) return;
+    const { error } = await signUp.password({
+      emailAddress,
+      password
+    });
+
+    if (error) {
+      console.error(JSON.stringify(error, null, 2));
+      posthog.capture('user_sign_up_failed', {
+        error_message: error.message,
+      });
+      return;
+    }
+
+    //send verification email
+    if (!error) {
+      await signUp.verifications.sendEmailCode();
+    }
+  };
+
   // Signup form
   return (
     <View className='auth-card'>
@@ -63,6 +91,11 @@ const SignUp = () => {
             <Text className='auth-helper'>Minimum 8 characters required</Text>
           )}
         </View>
+        <Pressable
+          className={`auth-button ${(!formValid || fetchStatus === 'fetching') && 'auth-button-disabled'}`}
+          onPress={handleSubmit}
+          disabled={!formValid || fetchStatus === "fetching"}
+        ></Pressable>
       </View>
     </View>
   )
