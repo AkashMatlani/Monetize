@@ -1,7 +1,9 @@
 import { useSignUp } from '@clerk/expo';
+import { Link } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import React, { useState } from 'react';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SignUp = () => {
 
@@ -46,58 +48,90 @@ const SignUp = () => {
 
   // Signup form
   return (
-    <View className='auth-card'>
-      <View className='auth-form'>
-        <View className='auth-field'>
-          <Text className='auth-label'>Email Address</Text>
-          <TextInput
-            className={`auth-input ${emailTouched && !emailValid && 'auth-input-error'}`}
-            autoCapitalize='none'
-            value={emailAddress}
-            placeholder='name@example.com'
-            placeholderTextColor='rgba(0,0,0,0.4)'
-            onChangeText={setEmailAddress}
-            onBlur={() => setEmailTouched(true)}
-            keyboardType='email-address'
-            autoComplete='email'
-          ></TextInput>
-          {emailTouched && !emailValid && (
-            <Text className='auth-error'>Please enter a valid email address</Text>
-          )}
-          {errors.fields.emailAddress && (
-            <Text className='auth-error'>{errors.fields.emailAddress.message}</Text>
-          )}
-        </View>
+    <SafeAreaView className='auth-safe-area'>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? "padding" : "height"}
+        className='auth-screen'
+      >
+        <ScrollView
+          className='auth-scroll'
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <View className='auth-card'>
+            <View className='auth-form'>
+              <View className='auth-field'>
+                <Text className='auth-label'>Email Address</Text>
+                <TextInput
+                  className={`auth-input ${emailTouched && !emailValid && 'auth-input-error'}`}
+                  autoCapitalize='none'
+                  value={emailAddress}
+                  placeholder='name@example.com'
+                  placeholderTextColor='rgba(0,0,0,0.4)'
+                  onChangeText={setEmailAddress}
+                  onBlur={() => setEmailTouched(true)}
+                  keyboardType='email-address'
+                  autoComplete='email'
+                ></TextInput>
+                {emailTouched && !emailValid && (
+                  <Text className='auth-error'>Please enter a valid email address</Text>
+                )}
+                {errors.fields.emailAddress && (
+                  <Text className='auth-error'>{errors.fields.emailAddress.message}</Text>
+                )}
+              </View>
 
-        <View className='auth-field'>
-          <Text className='auth-label'>Password</Text>
-          <TextInput
-            className={`auth-input ${passwordTouched && !passwordValid && 'auth-input-error'}`}
-            value={password}
-            onChangeText={setPassword}
-            placeholder='Create a strong password'
-            placeholderTextColor='rgba(0,0,0,0.4)'
-            secureTextEntry
-            onBlur={() => setPasswordTouched(true)}
-            autoComplete='password-new'
-          ></TextInput>
-          {passwordTouched && !passwordValid && (
-            <Text className='auth-error'>Password must be at least 8 characters</Text>
-          )}
-          {errors.fields.password && (
-            <Text className='auth-error'>{errors.fields.password.message}</Text>
-          )}
-          {!passwordTouched && (
-            <Text className='auth-helper'>Minimum 8 characters required</Text>
-          )}
-        </View>
-        <Pressable
-          className={`auth-button ${(!formValid || fetchStatus === 'fetching') && 'auth-button-disabled'}`}
-          onPress={handleSubmit}
-          disabled={!formValid || fetchStatus === "fetching"}
-        ></Pressable>
-      </View>
-    </View>
+              <View className='auth-field'>
+                <Text className='auth-label'>Password</Text>
+                <TextInput
+                  className={`auth-input ${passwordTouched && !passwordValid && 'auth-input-error'}`}
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder='Create a strong password'
+                  placeholderTextColor='rgba(0,0,0,0.4)'
+                  secureTextEntry
+                  onBlur={() => setPasswordTouched(true)}
+                  autoComplete='password-new'
+                ></TextInput>
+                {passwordTouched && !passwordValid && (
+                  <Text className='auth-error'>Password must be at least 8 characters</Text>
+                )}
+                {errors.fields.password && (
+                  <Text className='auth-error'>{errors.fields.password.message}</Text>
+                )}
+                {!passwordTouched && (
+                  <Text className='auth-helper'>Minimum 8 characters required</Text>
+                )}
+              </View>
+              <Pressable
+                className={`auth-button ${(!formValid || fetchStatus === 'fetching') && 'auth-button-disabled'}`}
+                onPress={handleSubmit}
+                disabled={!formValid || fetchStatus === "fetching"}
+              ></Pressable>
+            </View>
+          </View>
+
+          {/* Sign in Link */}
+          <View className='auth-link-row'>
+            <Text className='auth-link-copy'>Already have an account?</Text>
+            <Link href="/(auth)/sign-in" asChild>
+              <Pressable>
+                <Text className='auth-link'>Sign In</Text>
+              </Pressable>
+            </Link>
+          </View>
+
+          {/* Required for clerk's bot protection */}
+          <View nativeID='clerk-captcha'>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+
+
+
+
+
   )
 }
 
