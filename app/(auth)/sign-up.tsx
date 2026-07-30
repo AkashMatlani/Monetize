@@ -1,5 +1,5 @@
 import { useSignUp } from '@clerk/expo';
-import { Link } from 'expo-router';
+import { Href, Link, router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
@@ -24,6 +24,7 @@ const SignUp = () => {
 
   const formValid = emailAddress.length >= 0 && password.length >= 8 && emailValid;
 
+  const [code, setCode] = useState('');
   const handleSubmit = async () => {
 
     if (!formValid) return;
@@ -45,6 +46,46 @@ const SignUp = () => {
       await signUp.verifications.sendEmailCode();
     }
   };
+
+  const handleVerify = async () => {
+    await signUp.verifications.verifyEmailCode({
+      code,
+    });
+
+    if (signUp.status === "complete") {
+      await signUp.finalize({
+        navigate: ({ session, decorateUrl }) => {
+          if (session?.currentTask) {
+            console.log(session?.currentTask);
+            return;
+          }
+          posthog.identify(emailAddress, {
+            $set: { email: emailAddress },
+            $set_once: { sign_up_date: new Date().toISOString() }
+          });
+          posthog.capture('user_signed_up', { email: emailAddress });
+
+          const url = decorateUrl("/tabs");
+
+          if (url.startsWith('http')) {
+            if (typeof window !== "undefined" && window.location) {
+              window.location.href = url;
+            }
+            else {
+              router.replace("/(tabs)" as Href)
+            }
+          }
+          else {
+            router.replace(url as Href)
+          }
+        }
+      });
+    }
+    else {
+      console.error('Sign in attempt not complete', signUp)
+    }
+  };
+
 
   // Signup form
   return (
@@ -127,10 +168,6 @@ const SignUp = () => {
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
-
-
-
-
 
   )
 }
