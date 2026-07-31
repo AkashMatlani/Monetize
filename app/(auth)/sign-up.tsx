@@ -118,7 +118,7 @@ const SignUp = () => {
                   </View>
                   <View>
                     <Text className='auth-wordmark'>Recurrly</Text>
-                    <Text className='auth-wordmark-sub'>SUBSCRPTIONS</Text>
+                    <Text className='auth-wordmark-sub'>SUBSCRIPTIONS</Text>
                   </View>
                 </View>
                 <Text className='auth-title'>Verify your email</Text>
