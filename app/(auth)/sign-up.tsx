@@ -1,4 +1,4 @@
-import { useSignUp } from '@clerk/expo';
+import { useAuth, useSignUp } from '@clerk/expo';
 import { Href, Link, router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import React, { useState } from 'react';
@@ -10,6 +10,8 @@ const SignUp = () => {
   const posthog = usePostHog();
 
   const { signUp, errors, fetchStatus } = useSignUp();
+
+  const { isSignedIn } = useAuth();
 
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
@@ -82,9 +84,53 @@ const SignUp = () => {
       });
     }
     else {
-      console.error('Sign in attempt not complete', signUp)
+      console.error('Sign up attempt not complete', signUp)
     }
   };
+
+  //Don't show anything if alreday signed in or sign-up complete
+
+  if (signUp.status === "complete" || isSignedIn) {
+    return null;
+  }
+
+  //show verification screen if email needs verification
+  if (signUp.status === 'missing_requirements' &&
+    signUp.unverifiedFields.includes('email_address') &&
+    signUp.missingFields.length === 0) {
+    return (
+      <SafeAreaView className='auth-safe-area'>
+        <KeyboardAvoidingView
+        behavior={Platform.OS==="ios" ?'padding' : "height"}
+        className='auth-screen'
+        >
+          <ScrollView
+           className='auth-scroll'
+           keyboardShouldPersistTaps="handled"
+           showsVerticalScrollIndicator={false}
+           >
+            <View className='auth-content'>
+              {/* Branding */}
+              <View className='auth-brand-block'>
+                <View className='auth-logo-wrap'>
+                  <View className='auth-logo-mark'>
+                    <Text className='auth-logo-mark-text'>R</Text>
+                  </View>
+                  <View>
+                    <Text className='auth-wordmark'>Recurrly</Text>
+                    <Text className='auth-wordmark-sub'>SUBSCRPTIONS</Text>
+                  </View>
+                </View>
+                <Text className='auth-title'>Verify your email</Text>
+                <Text className='auth-subtitle'>We sent a verification code to {emailAddress}
+                </Text>
+              </View>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    )
+  }
 
 
   // Signup form
