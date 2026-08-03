@@ -101,14 +101,14 @@ const SignUp = () => {
     return (
       <SafeAreaView className='auth-safe-area'>
         <KeyboardAvoidingView
-        behavior={Platform.OS==="ios" ?'padding' : "height"}
-        className='auth-screen'
+          behavior={Platform.OS === "ios" ? 'padding' : "height"}
+          className='auth-screen'
         >
           <ScrollView
-           className='auth-scroll'
-           keyboardShouldPersistTaps="handled"
-           showsVerticalScrollIndicator={false}
-           >
+            className='auth-scroll'
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
             <View className='auth-content'>
               {/* Branding */}
               <View className='auth-brand-block'>
@@ -124,6 +124,28 @@ const SignUp = () => {
                 <Text className='auth-title'>Verify your email</Text>
                 <Text className='auth-subtitle'>We sent a verification code to {emailAddress}
                 </Text>
+              </View>
+
+              {/* Verification form */}
+
+              <View className='auth-card'>
+                <View className="auth-form">
+                  <View className="auth-field">
+                    <Text className="auth-label">Verification Code</Text>
+                    <TextInput className="auth-input"
+                      value={code}
+                      placeholder='Enter a 6 digit code'
+                      placeholderTextColor="rgba(0,0,0,0.4)"
+                      onChangeText={setCode}
+                      keyboardType='number-pad'
+                      autoComplete='one-time-code'
+                      maxLength={6}
+                    />
+                    {errors.fields.code && (
+                      <Text className='auth-error'>{errors.fields.code.message}</Text>
+                    )}
+                  </View>
+                </View>
               </View>
             </View>
           </ScrollView>
