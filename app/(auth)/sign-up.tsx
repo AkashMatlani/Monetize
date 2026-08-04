@@ -145,12 +145,30 @@ const SignUp = () => {
                       <Text className='auth-error'>{errors.fields.code.message}</Text>
                     )}
                   </View>
+
+                  <Pressable
+                    className={`auth-button ${(!code || fetchStatus === 'fetching') && 'auth-button-disabled'}`}
+                    onPress={handleVerify}
+                    disabled={!code || fetchStatus === 'fetching'}
+                  >
+                    <Text className='auth-button-text'>{
+                      fetchStatus === "fetching" ? 'Verifying...' : 'Verify Email'}
+                    </Text>
+                  </Pressable>
+
+                  <Pressable
+                    className='auth-secondary-button'
+                    onPress={() => signUp.verifications.sendEmailCode}
+                    disabled={fetchStatus === "fetching"}
+                  >
+                    <Text className='auth-secondary-button-text'>Resend Code</Text>
+                  </Pressable>
                 </View>
               </View>
             </View>
           </ScrollView>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+        </KeyboardAvoidingView >
+      </SafeAreaView >
     )
   }
 
