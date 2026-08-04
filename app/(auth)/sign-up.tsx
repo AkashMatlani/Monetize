@@ -158,7 +158,7 @@ const SignUp = () => {
 
                   <Pressable
                     className='auth-secondary-button'
-                    onPress={() => signUp.verifications.sendEmailCode}
+                    onPress={() => signUp.verifications.sendEmailCode()}
                     disabled={fetchStatus === "fetching"}
                   >
                     <Text className='auth-secondary-button-text'>Resend Code</Text>
