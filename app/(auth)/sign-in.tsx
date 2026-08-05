@@ -20,6 +20,8 @@ const SignIn = () => {
   const formValid = emailAddress.length > 0 && password.length > 0 && emailValid;
   const posthog = usePostHog();
   const router = useRouter();
+  const [code, setCode] = useState('');
+
 
   const handleSubmit = async () => {
     if (!formValid) return;
@@ -85,6 +87,46 @@ const SignIn = () => {
     }
     else {
       console.error("Sign-in attempt not complete:", signIn);
+    }
+  };
+
+
+  const handleVerify = async () => {
+    await signIn.mfa.verifyEmailCode({ code })
+
+    if (signIn.status === "complete") {
+      await signIn.finalize({
+        navigate: ({ session, decorateUrl }) => {
+          if (session?.currentTask) {
+            console.log(session?.currentTask);
+            return;
+          }
+
+          posthog.identify(emailAddress, {
+            $set: { email: emailAddress },
+            $set_once: { first_sign_in_date: new Date().toISOString() },
+          });
+          posthog.capture("user_signed_in", { email: emailAddress });
+
+          const url=decorateUrl('/(tabs)');
+
+          if(url.startsWith('http')){
+            //only window.location on web platform
+            if(typeof window!== "undefined" && window.location){
+              window.location.href=url;
+            }
+            else{
+              router.replace('/(tabs)' as Href)
+            }
+          }
+          else{
+            router.replace(url as Href)
+          }
+        }
+      });
+    }
+    else{
+      console.error("Sign-in attempt not complete:",signIn)
     }
   };
 
