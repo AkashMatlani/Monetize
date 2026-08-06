@@ -108,27 +108,63 @@ const SignIn = () => {
           });
           posthog.capture("user_signed_in", { email: emailAddress });
 
-          const url=decorateUrl('/(tabs)');
+          const url = decorateUrl('/(tabs)');
 
-          if(url.startsWith('http')){
+          if (url.startsWith('http')) {
             //only window.location on web platform
-            if(typeof window!== "undefined" && window.location){
-              window.location.href=url;
+            if (typeof window !== "undefined" && window.location) {
+              window.location.href = url;
             }
-            else{
+            else {
               router.replace('/(tabs)' as Href)
             }
           }
-          else{
+          else {
             router.replace(url as Href)
           }
         }
       });
     }
-    else{
-      console.error("Sign-in attempt not complete:",signIn)
+    else {
+      console.error("Sign-in attempt not complete:", signIn)
     }
   };
+
+  //show verification screen if client trust is needed
+  if (signIn.status === "needs_client_trust") {
+    return (
+      <SafeAreaView className='auth-safe-area'>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? "padding" : "height"}
+          className='auth-screen'
+        >
+          <ScrollView
+            className='auth-scroll'
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            <View className='auth-content'>
+              {/* Branding */}
+              <View className='auth-brand-block'>
+                <View className="auth-logo-wrap">
+                  <View className='auth-logo-mark'>
+                    <Text className='auth-logo-mark-test'>R</Text>
+                  </View>
+                </View>
+                <View>
+                  <Text className='auth-wordmark'>Recurrly</Text>
+                  <Text className='auth-wordmark-sub'>SUBSCRIPTION</Text>
+                </View>
+              </View>
+              <Text className='auth-title'>Verify your identity</Text>
+              <Text className='auth-subtitle'>We sent a verification code to your email</Text>
+            </View>
+          </ScrollView>
+
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    )
+  }
 
   return (
     <SafeAreaView className='auth-safe-area'>
@@ -144,63 +180,65 @@ const SignIn = () => {
           <View className='auth-content'>
             {/* Branding */}
             <View className='auth-brand-block'>
-              <View className='auth-logo-mark'>
-                <Text className='auth-logo-mark-test'>R</Text>
+              <View className="auth-logo-wrap">
+                <View className='auth-logo-mark'>
+                  <Text className='auth-logo-mark-test'>R</Text>
+                </View>
+                <View>
+                  <Text className='auth-wordmark'>Recurrly</Text>
+                  <Text className='auth-wordmark-sub'>SUBSCRIPTION</Text>
+                </View>
               </View>
-              <View>
-                <Text className='auth-wordmark'>Recurrly</Text>
-                <Text className='auth-wordmark-sub'>SUBSCRIPTION</Text>
-              </View>
+              <Text className='auth-title'>Welcome back</Text>
+              <Text className='auth-subtitle'>Sign in to continue your subscription</Text>
             </View>
-            <Text className='auth-title'>Welcome back</Text>
-            <Text className='auth-subtitle'>Sign in to continue your subscription</Text>
-          </View>
 
-          {/* Sign in Form */}
-          <View className='auth-card'>
-            <View className='auth-form'>
-              <View className='auth-field'>
-                <Text className='auth-label'>Email Address</Text>
-                <TextInput
-                  className={`auth-input ${emailTouched && !emailValid && 'auth-input-error'}`}
-                  autoCapitalize='none'
-                  value={emailAddress}
-                  placeholder='name@example.com'
-                  placeholderTextColor="rgba(0,0,0,0.4)"
-                  onChangeText={setEmailAddress}
-                  onBlur={() => setEmailTouched(true)}
-                  keyboardType='email-address'
-                  autoComplete='email'
-                ></TextInput>
-                {emailTouched && !emailValid && (
-                  <Text className='auth-error'>Please enter a valid email address</Text>
-                )}
-                {errors?.fields?.identifier && (
-                  <Text className='auth-error'>{errors.fields.identifier.message}</Text>
-                )}
-              </View>
+            {/* Sign in Form */}
+            <View className='auth-card'>
+              <View className='auth-form'>
+                <View className='auth-field'>
+                  <Text className='auth-label'>Email Address</Text>
+                  <TextInput
+                    className={`auth-input ${emailTouched && !emailValid && 'auth-input-error'}`}
+                    autoCapitalize='none'
+                    value={emailAddress}
+                    placeholder='name@example.com'
+                    placeholderTextColor="rgba(0,0,0,0.4)"
+                    onChangeText={setEmailAddress}
+                    onBlur={() => setEmailTouched(true)}
+                    keyboardType='email-address'
+                    autoComplete='email'
+                  ></TextInput>
+                  {emailTouched && !emailValid && (
+                    <Text className='auth-error'>Please enter a valid email address</Text>
+                  )}
+                  {errors?.fields?.identifier && (
+                    <Text className='auth-error'>{errors.fields.identifier.message}</Text>
+                  )}
+                </View>
 
-              <View className='auth-field'>
-                <Text className='auth-label'>Password</Text>
-                <TextInput
-                  className={`auth-input ${passWordTouched && !passwordValid && 'auth-input-error'}`}
-                  value={password}
-                  placeholderTextColor="rgba(0,0,0,0.4)"
-                  placeholder="Enter your password"
-                  secureTextEntry
-                  onChangeText={setPassword}
-                  onBlur={() => setPassWordTouched(true)}
-                  autoComplete='password'
-                />
-                {passWordTouched && !passwordValid && (
-                  <Text className='auth-error'>
-                    Password is required
-                  </Text>
-                )}
+                <View className='auth-field'>
+                  <Text className='auth-label'>Password</Text>
+                  <TextInput
+                    className={`auth-input ${passWordTouched && !passwordValid && 'auth-input-error'}`}
+                    value={password}
+                    placeholderTextColor="rgba(0,0,0,0.4)"
+                    placeholder="Enter your password"
+                    secureTextEntry
+                    onChangeText={setPassword}
+                    onBlur={() => setPassWordTouched(true)}
+                    autoComplete='password'
+                  />
+                  {passWordTouched && !passwordValid && (
+                    <Text className='auth-error'>
+                      Password is required
+                    </Text>
+                  )}
 
-                {errors?.fields?.password && (
-                  <Text className='auth-error'>{errors.fields.password.message}</Text>
-                )}
+                  {errors?.fields?.password && (
+                    <Text className='auth-error'>{errors.fields.password.message}</Text>
+                  )}
+                </View>
 
                 <Pressable
                   className={`auth-button ${(!formValid || fetchStatus === "fetching") && 'auth-button-disabled'}`}
