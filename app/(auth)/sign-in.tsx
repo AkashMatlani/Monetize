@@ -148,7 +148,7 @@ const SignIn = () => {
               <View className='auth-brand-block'>
                 <View className="auth-logo-wrap">
                   <View className='auth-logo-mark'>
-                    <Text className='auth-logo-mark-test'>R</Text>
+                    <Text className='auth-logo-mark-text'>R</Text>
                   </View>
                 </View>
                 <View>
@@ -160,7 +160,6 @@ const SignIn = () => {
               <Text className='auth-subtitle'>We sent a verification code to your email</Text>
             </View>
           </ScrollView>
-
         </KeyboardAvoidingView>
       </SafeAreaView>
     )
@@ -182,7 +181,7 @@ const SignIn = () => {
             <View className='auth-brand-block'>
               <View className="auth-logo-wrap">
                 <View className='auth-logo-mark'>
-                  <Text className='auth-logo-mark-test'>R</Text>
+                  <Text className='auth-logo-mark-text'>R</Text>
                 </View>
                 <View>
                   <Text className='auth-wordmark'>Recurrly</Text>
