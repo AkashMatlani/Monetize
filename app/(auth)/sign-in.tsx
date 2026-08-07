@@ -159,6 +159,40 @@ const SignIn = () => {
               <Text className='auth-title'>Verify your identity</Text>
               <Text className='auth-subtitle'>We sent a verification code to your email</Text>
             </View>
+
+            {/* Verification Form */}
+
+            <View className='auth-card'>
+              <View className='auth-form'>
+                <View className='auth-field'>
+                  <Text className='auth-label'>Verification Code</Text>
+                  <TextInput
+                    className='auth-input'
+                    value={code}
+                    placeholderTextColor="rgba(0,0,0,0.4)"
+                    onChangeText={setCode}
+                    keyboardType='number-pad'
+                    autoComplete='one-time-code'
+                    maxLength={6} />
+                  {
+                    errors?.fields?.code && (
+                      <Text className='auth-error'>
+                        {errors.fields.code.message}
+                      </Text>
+                    )
+                  }
+                </View>
+                <Pressable
+                  className={`auth-button ${(!code || fetchStatus === "fetching") && 'auth-button-disabled'}`}
+                  onPress={handleVerify}
+                  disabled={!code || fetchStatus === "fetching"}
+                >
+                  <Text className='auth-button-text'>
+                    {fetchStatus === "fetching" ? "Verifying.." : "Verify"}
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
