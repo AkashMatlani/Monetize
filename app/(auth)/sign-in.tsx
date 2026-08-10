@@ -191,6 +191,21 @@ const SignIn = () => {
                     {fetchStatus === "fetching" ? "Verifying.." : "Verify"}
                   </Text>
                 </Pressable>
+                <Pressable
+                  className='auth-secondary-button'
+                  onPress={() => signIn.mfa.sendEmailCode()}
+                  disabled={fetchStatus === "fetching"}
+                >
+                  <Text className='auth-secondary-button-text'>Resend code</Text>
+                </Pressable>
+
+                <Pressable
+                  className='auth-secondary-button'
+                  onPress={() => signIn.reset()}
+                  disabled={fetchStatus === "fetching"}
+                >
+                  <Text className='auth-secondary-button-text'>Start Over</Text>
+                </Pressable>
               </View>
             </View>
           </ScrollView>
