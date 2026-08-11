@@ -182,6 +182,7 @@ const SignIn = () => {
                     )
                   }
                 </View>
+                
                 <Pressable
                   className={`auth-button ${(!code || fetchStatus === "fetching") && 'auth-button-disabled'}`}
                   onPress={handleVerify}
@@ -191,6 +192,7 @@ const SignIn = () => {
                     {fetchStatus === "fetching" ? "Verifying.." : "Verify"}
                   </Text>
                 </Pressable>
+
                 <Pressable
                   className='auth-secondary-button'
                   onPress={() => signIn.mfa.sendEmailCode()}

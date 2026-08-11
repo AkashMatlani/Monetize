@@ -9,28 +9,28 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const tabBar = components.tabBar;
 
-   const TabIcon = ({ focused, icon }: TabIconProps) => {
-        return (
-            <View className='tabs-icon'>
-                <View className={clsx('tabs-pill', focused && 'tabs-active')}>
-                    <Image source={icon}  resizeMode ="contain" className='tabs-glyph' />
-                </View>
+const TabIcon = ({ focused, icon }: TabIconProps) => {
+    return (
+        <View className='tabs-icon'>
+            <View className={clsx('tabs-pill', focused && 'tabs-active')}>
+                <Image source={icon} resizeMode="contain" className='tabs-glyph' />
             </View>
-        );
-    };
+        </View>
+    );
+};
 const TabsLayout = () => {
 
-    const{isSignedIn,isLoaded}=useAuth();
+    const { isSignedIn, isLoaded } = useAuth();
     const insets = useSafeAreaInsets();
 
-    if(!isLoaded){
+    if (!isLoaded) {
         return null;
     }
 
     //redirect user if user not authenticated
 
-    if(!isSignedIn){
-        return<Redirect href='/(auth)/sign-in'/>;
+    if (!isSignedIn) {
+        return <Redirect href='/(auth)/sign-in' />;
     }
 
     return (
