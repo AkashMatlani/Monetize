@@ -1,14 +1,10 @@
 import { useAuth, useSignUp } from '@clerk/expo';
 import { Href, Link, router } from 'expo-router';
-import { usePostHog } from 'posthog-react-native';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SignUp = () => {
-
-  const posthog = usePostHog();
-
   const { signUp, errors, fetchStatus } = useSignUp();
 
   const { isSignedIn } = useAuth();
@@ -37,9 +33,6 @@ const SignUp = () => {
 
     if (error) {
       console.error(JSON.stringify(error, null, 2));
-      posthog.capture('user_sign_up_failed', {
-        error_message: error.message,
-      });
       return;
     }
 
@@ -61,11 +54,6 @@ const SignUp = () => {
             console.log(session?.currentTask);
             return;
           }
-          posthog.identify(emailAddress, {
-            $set: { email: emailAddress },
-            $set_once: { sign_up_date: new Date().toISOString() }
-          });
-          posthog.capture('user_signed_up', { email: emailAddress });
 
           const url = decorateUrl("/tabs");
 
@@ -99,42 +87,45 @@ const SignUp = () => {
     signUp.unverifiedFields.includes('email_address') &&
     signUp.missingFields.length === 0) {
     return (
-      <SafeAreaView className='auth-safe-area'>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff9e3' }}>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? 'padding' : "height"}
-          className='auth-screen'
+          style={{ flex: 1, backgroundColor: '#fff9e3' }}
         >
           <ScrollView
-            className='auth-scroll'
+            style={{ flex: 1 }}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >
-            <View className='auth-content'>
+            <View style={{ paddingHorizontal: 20, paddingTop: 32, paddingBottom: 40 }}>
               {/* Branding */}
-              <View className='auth-brand-block'>
-                <View className='auth-logo-wrap'>
-                  <View className='auth-logo-mark'>
-                    <Text className='auth-logo-mark-text'>R</Text>
-                  </View>
-                  <View>
-                    <Text className='auth-wordmark'>Recurrly</Text>
-                    <Text className='auth-wordmark-sub'>SUBSCRIPTIONS</Text>
+              <View style={{ marginTop: 8, alignItems: 'center' }}>
+                <View style={{ marginBottom: 28, flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                  <View style={{ width: 56, height: 56, alignItems: 'center', justifyContent: 'center', borderRadius: 16, backgroundColor: '#ea7a53' }}>
+                    <Text style={{ fontSize: 24, fontWeight: '800', color: '#fff9e3' }}>R</Text>
                   </View>
                 </View>
-                <Text className='auth-title'>Verify your email</Text>
-                <Text className='auth-subtitle'>We sent a verification code to {emailAddress}
-                </Text>
+                <Text style={{ fontSize: 28, fontWeight: '800', color: '#081126' }}>Verify your email</Text>
+                <Text style={{ fontSize: 14, fontWeight: '500', color: 'rgba(0, 0, 0, 0.6)', marginTop: 8 }}>We sent a verification code to {emailAddress}</Text>
               </View>
 
               {/* Verification form */}
-
-              <View className='auth-card'>
-                <View className="auth-form">
-                  <View className="auth-field">
-                    <Text className="auth-label">Verification Code</Text>
-                    <TextInput className="auth-input"
+              <View style={{ marginTop: 32, borderRadius: 16, borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.1)', padding: 16 }}>
+                <View style={{ gap: 16 }}>
+                  <View>
+                    <Text style={{ marginBottom: 8, fontSize: 14, fontWeight: '600', color: '#081126' }}>Verification Code</Text>
+                    <TextInput
+                      style={{
+                        borderRadius: 12,
+                        borderWidth: 1,
+                        borderColor: 'rgba(0, 0, 0, 0.1)',
+                        paddingHorizontal: 16,
+                        paddingVertical: 12,
+                        fontSize: 16,
+                        backgroundColor: '#fff8e7'
+                      }}
                       value={code}
-                      placeholder='Enter a 6 digit code'
+                      placeholder='000000'
                       placeholderTextColor="rgba(0,0,0,0.4)"
                       onChangeText={setCode}
                       keyboardType='number-pad'
@@ -142,119 +133,171 @@ const SignUp = () => {
                       maxLength={6}
                     />
                     {errors.fields.code && (
-                      <Text className='auth-error'>{errors.fields.code.message}</Text>
+                      <Text style={{ marginTop: 4, color: '#dc2626', fontSize: 12 }}>{errors.fields.code.message}</Text>
                     )}
                   </View>
 
                   <Pressable
-                    className={`auth-button ${(!code || fetchStatus === 'fetching') && 'auth-button-disabled'}`}
+                    style={{
+                      paddingVertical: 12,
+                      paddingHorizontal: 16,
+                      borderRadius: 12,
+                      backgroundColor: (!code || fetchStatus === 'fetching') ? 'rgba(8, 17, 38, 0.5)' : '#081126',
+                      opacity: (!code || fetchStatus === 'fetching') ? 0.6 : 1
+                    }}
                     onPress={handleVerify}
                     disabled={!code || fetchStatus === 'fetching'}
                   >
-                    <Text className='auth-button-text'>{
-                      fetchStatus === "fetching" ? 'Verifying...' : 'Verify Email'}
+                    <Text style={{ textAlign: 'center', color: '#fff9e3', fontSize: 16, fontWeight: '600' }}>
+                      {fetchStatus === "fetching" ? 'Verifying...' : 'Verify Email'}
                     </Text>
                   </Pressable>
 
                   <Pressable
-                    className='auth-secondary-button'
+                    style={{
+                      paddingVertical: 12,
+                      paddingHorizontal: 16,
+                      borderRadius: 12,
+                      borderWidth: 1,
+                      borderColor: 'rgba(0, 0, 0, 0.1)'
+                    }}
                     onPress={() => signUp.verifications.sendEmailCode()}
                     disabled={fetchStatus === "fetching"}
                   >
-                    <Text className='auth-secondary-button-text'>Resend Code</Text>
+                    <Text style={{ textAlign: 'center', color: '#081126', fontSize: 14, fontWeight: '600' }}>Resend Code</Text>
                   </Pressable>
                 </View>
               </View>
             </View>
           </ScrollView>
-        </KeyboardAvoidingView >
-      </SafeAreaView >
+        </KeyboardAvoidingView>
+      </SafeAreaView>
     )
   }
 
 
   // Signup form
   return (
-    <SafeAreaView className='auth-safe-area'>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff9e3' }}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? "padding" : "height"}
-        className='auth-screen'
+        style={{ flex: 1, backgroundColor: '#fff9e3' }}
       >
         <ScrollView
-          className='auth-scroll'
+          style={{ flex: 1 }}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <View className='auth-card'>
-            <View className='auth-form'>
-              <View className='auth-field'>
-                <Text className='auth-label'>Email Address</Text>
-                <TextInput
-                  className={`auth-input ${emailTouched && !emailValid && 'auth-input-error'}`}
-                  autoCapitalize='none'
-                  value={emailAddress}
-                  placeholder='name@example.com'
-                  placeholderTextColor='rgba(0,0,0,0.4)'
-                  onChangeText={setEmailAddress}
-                  onBlur={() => setEmailTouched(true)}
-                  keyboardType='email-address'
-                  autoComplete='email'
-                ></TextInput>
-                {emailTouched && !emailValid && (
-                  <Text className='auth-error'>Please enter a valid email address</Text>
-                )}
-                {errors.fields.emailAddress && (
-                  <Text className='auth-error'>{errors.fields.emailAddress.message}</Text>
-                )}
+          <View style={{ paddingHorizontal: 20, paddingTop: 32, paddingBottom: 40 }}>
+            {/* Branding */}
+            <View style={{ marginTop: 8, alignItems: 'center', marginBottom: 32 }}>
+              <View style={{ marginBottom: 28, flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                <View style={{ width: 56, height: 56, alignItems: 'center', justifyContent: 'center', borderRadius: 16, backgroundColor: '#ea7a53' }}>
+                  <Text style={{ fontSize: 24, fontWeight: '800', color: '#fff9e3' }}>R</Text>
+                </View>
+                <View>
+                  <Text style={{ fontSize: 30, fontWeight: '800', color: '#081126' }}>Recurrly</Text>
+                  <Text style={{ fontSize: 12, fontWeight: '600', color: '#081126' }}>SUBSCRIPTION</Text>
+                </View>
               </View>
-
-              <View className='auth-field'>
-                <Text className='auth-label'>Password</Text>
-                <TextInput
-                  className={`auth-input ${passwordTouched && !passwordValid && 'auth-input-error'}`}
-                  value={password}
-                  onChangeText={setPassword}
-                  placeholder='Create a strong password'
-                  placeholderTextColor='rgba(0,0,0,0.4)'
-                  secureTextEntry
-                  onBlur={() => setPasswordTouched(true)}
-                  autoComplete='password-new'
-                ></TextInput>
-                {passwordTouched && !passwordValid && (
-                  <Text className='auth-error'>Password must be at least 8 characters</Text>
-                )}
-                {errors.fields.password && (
-                  <Text className='auth-error'>{errors.fields.password.message}</Text>
-                )}
-                {!passwordTouched && (
-                  <Text className='auth-helper'>Minimum 8 characters required</Text>
-                )}
-              </View>
-              <Pressable
-                className={`auth-button ${(!formValid || fetchStatus === 'fetching') && 'auth-button-disabled'}`}
-                onPress={handleSubmit}
-                disabled={!formValid || fetchStatus === "fetching"}
-              ></Pressable>
+              <Text style={{ fontSize: 28, fontWeight: '800', color: '#081126' }}>Create Account</Text>
+              <Text style={{ fontSize: 14, fontWeight: '500', color: 'rgba(0, 0, 0, 0.6)', marginTop: 8 }}>Sign up to manage your subscriptions</Text>
             </View>
-          </View>
 
-          {/* Sign in Link */}
-          <View className='auth-link-row'>
-            <Text className='auth-link-copy'>Already have an account?</Text>
-            <Link href="/(auth)/sign-in" asChild>
-              <Pressable>
-                <Text className='auth-link'>Sign In</Text>
-              </Pressable>
-            </Link>
-          </View>
+            {/* Signup Form */}
+            <View style={{ borderRadius: 16, borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.1)', padding: 16 }}>
+              <View style={{ gap: 16 }}>
+                <View>
+                  <Text style={{ marginBottom: 8, fontSize: 14, fontWeight: '600', color: '#081126' }}>Email Address</Text>
+                  <TextInput
+                    style={{
+                      borderRadius: 12,
+                      borderWidth: 1,
+                      borderColor: emailTouched && !emailValid ? '#dc2626' : 'rgba(0, 0, 0, 0.1)',
+                      paddingHorizontal: 16,
+                      paddingVertical: 12,
+                      fontSize: 16,
+                      backgroundColor: '#fff8e7'
+                    }}
+                    autoCapitalize='none'
+                    value={emailAddress}
+                    placeholder='name@example.com'
+                    placeholderTextColor='rgba(0,0,0,0.4)'
+                    onChangeText={setEmailAddress}
+                    onBlur={() => setEmailTouched(true)}
+                    keyboardType='email-address'
+                    autoComplete='email'
+                  />
+                  {emailTouched && !emailValid && (
+                    <Text style={{ marginTop: 4, color: '#dc2626', fontSize: 12 }}>Please enter a valid email address</Text>
+                  )}
+                  {errors.fields.emailAddress && (
+                    <Text style={{ marginTop: 4, color: '#dc2626', fontSize: 12 }}>{errors.fields.emailAddress.message}</Text>
+                  )}
+                </View>
 
-          {/* Required for clerk's bot protection */}
-          <View nativeID='clerk-captcha'>
+                <View>
+                  <Text style={{ marginBottom: 8, fontSize: 14, fontWeight: '600', color: '#081126' }}>Password</Text>
+                  <TextInput
+                    style={{
+                      borderRadius: 12,
+                      borderWidth: 1,
+                      borderColor: passwordTouched && !passwordValid ? '#dc2626' : 'rgba(0, 0, 0, 0.1)',
+                      paddingHorizontal: 16,
+                      paddingVertical: 12,
+                      fontSize: 16,
+                      backgroundColor: '#fff8e7'
+                    }}
+                    value={password}
+                    onChangeText={setPassword}
+                    placeholder='Create a strong password'
+                    placeholderTextColor='rgba(0,0,0,0.4)'
+                    secureTextEntry
+                    onBlur={() => setPasswordTouched(true)}
+                    autoComplete='password-new'
+                  />
+                  {passwordTouched && !passwordValid && (
+                    <Text style={{ marginTop: 4, color: '#dc2626', fontSize: 12 }}>Password must be at least 8 characters</Text>
+                  )}
+                  {errors.fields.password && (
+                    <Text style={{ marginTop: 4, color: '#dc2626', fontSize: 12 }}>{errors.fields.password.message}</Text>
+                  )}
+                  {!passwordTouched && (
+                    <Text style={{ marginTop: 4, color: 'rgba(0, 0, 0, 0.6)', fontSize: 12 }}>Minimum 8 characters required</Text>
+                  )}
+                </View>
+
+                <Pressable
+                  style={{
+                    paddingVertical: 12,
+                    paddingHorizontal: 16,
+                    borderRadius: 12,
+                    backgroundColor: (!formValid || fetchStatus === 'fetching') ? 'rgba(8, 17, 38, 0.5)' : '#081126',
+                    opacity: (!formValid || fetchStatus === 'fetching') ? 0.6 : 1
+                  }}
+                  onPress={handleSubmit}
+                  disabled={!formValid || fetchStatus === "fetching"}
+                >
+                  <Text style={{ textAlign: 'center', color: '#fff9e3', fontSize: 16, fontWeight: '600' }}>
+                    {fetchStatus === 'fetching' ? 'Creating Account...' : 'Create Account'}
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+
+            {/* Sign in Link */}
+            <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'center', gap: 4 }}>
+              <Text style={{ fontSize: 14, color: 'rgba(0, 0, 0, 0.6)' }}>Already have an account?</Text>
+              <Link href="/(auth)/sign-in" asChild>
+                <Pressable>
+                  <Text style={{ fontSize: 14, fontWeight: '600', color: '#ea7a53' }}>Sign In</Text>
+                </Pressable>
+              </Link>
+            </View>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
-
   )
 }
 

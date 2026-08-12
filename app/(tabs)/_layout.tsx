@@ -4,7 +4,7 @@ import { useAuth } from '@clerk/expo'
 import clsx from 'clsx'
 import { Redirect, Tabs } from 'expo-router'
 import React from 'react'
-import { Image, View } from 'react-native'
+import { ActivityIndicator, Image, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const tabBar = components.tabBar;
@@ -24,7 +24,11 @@ const TabsLayout = () => {
     const insets = useSafeAreaInsets();
 
     if (!isLoaded) {
-        return null;
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff9e3' }}>
+                <ActivityIndicator size="large" color="#081126" />
+            </View>
+        );
     }
 
     //redirect user if user not authenticated

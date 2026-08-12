@@ -59,9 +59,8 @@ export default function App() {
         renderItem={({ item }) => (
           <SubscrptionCard
           {...item}
-            expanded={expandedSubscrptionId === item.id}
-            onPress={() => setExpandedSubscrptionId((currentId) => currentId === item.id ? null : item.id)}
-          />
+          expanded={expandedSubscrptionId === item.id}
+          onPress={() => setExpandedSubscrptionId((currentId) => currentId === item.id ? null : item.id)}          />
         )}
         extraData={expandedSubscrptionId}
         ItemSeparatorComponent={() => <View className='h-4' />}

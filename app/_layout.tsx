@@ -4,6 +4,7 @@ import { tokenCache } from '@clerk/expo/token-cache';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,10 +33,18 @@ function RootLayoutContent() {
   }, [fontsLoaded, authLoaded]);
 
   if (!fontsLoaded || !authLoaded) {
-    return null;
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff9e3' }}>
+        <ActivityIndicator size="large" color="#081126" />
+      </View>
+    );
   }
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <View style={{ flex: 1 }}>
+      <Stack screenOptions={{ headerShown: false }} />
+    </View>
+  );
 }
 
 export default function RootLayout() {
