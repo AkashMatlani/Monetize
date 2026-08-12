@@ -32,7 +32,7 @@ declare global {
     interface SubscrptionCardProps extends Omit<Subscrption, "id"> {
         expanded: boolean,
         onPress: () => void;
-        onCancelPress:? () => void;
+        onCancelPress?: () => void;
         isCancelling?: boolean;
     }
 }
