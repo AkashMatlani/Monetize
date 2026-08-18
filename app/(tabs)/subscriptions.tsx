@@ -1,5 +1,5 @@
 import SubscrptionCard from "@/components/SubscrptionCard";
-import { useSubscrptionStore } from "@/lib/subscrptionstore";
+import { useSubscrptionStore } from "@/lib/subscrptionStore";
 import { styled } from "nativewind";
 import React, { useState } from 'react';
 import { FlatList, Text, TextInput, View } from 'react-native';
@@ -37,8 +37,11 @@ const Subscriptions = () => {
             expanded={expandedId === item.id}
             onPress={() => setExpandedId(expandedId === item.id ? null : item.id)} />
         )}
-      >
-      </FlatList>
+        contentContainerStyle={{paddingHorizontal:20,paddingBottom:20,gap:12}}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+      />
     </SafeAreaView>
   )
 }
