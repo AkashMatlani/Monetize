@@ -274,4 +274,22 @@
   .auth-secondary-button-text {
     @apply text-sm font-sans-semibold text-accent;
   }
+  .modal-overlay {
+    @apply flex-1 bg-black/50;
+  }
+  .modal-container {
+    @apply mt-auto max-h-[85%] rounded-t-3xl bg-background;
+  }
+  .modal-header {
+    @apply flex-row items-center justify-between border-b border-border px-5 py-4;
+  }
+  .modal-title {
+    @apply text-xl font-sans-bold text-primary;
+  }
+  .modal-close {
+    @apply size-8 items-center justify-center rounded-full bg-muted;
+  }
+  .modal-close-text {
+    @apply text-lg font-sans-bold text-primary;
+  }
 }
