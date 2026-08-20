@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { useState } from "react";
 import { KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 
@@ -7,9 +8,12 @@ interface CreateSubscriptionModalProps {
     onSubmit: (subscription: Subscrption) => void;
 }
 
+type Frequency = 'Monthly' | 'Yearly';
+
 const CreateSubscriptionModal = ({ visible, onClose, onSubmit }: CreateSubscriptionModalProps) => {
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
+    const [frequency, setFrequency] = useState<Frequency>('Monthly');
 
     const isVaildPrice = () => {
         const trimmedPrice = price.trim();
@@ -87,6 +91,26 @@ const CreateSubscriptionModal = ({ visible, onClose, onSubmit }: CreateSubscript
                                     keyboardType="decimal-pad"
                                 ></TextInput>
                             </View>
+
+                            <View className="auth-field">
+                                <Text className="auth-label">Frequency</Text>
+                                <View className="picker-row">
+                                    <Pressable
+                                        className={clsx('picker-option', frequency === 'Monthly' && 'picker-option-active')}
+                                        onPress={() => setFrequency('Monthly')}
+                                    >
+                                        <Text className={clsx('picker-option-text', frequency === 'Monthly' && 'picker-option-text-active')}>
+                                            Monthly
+                                        </Text>
+                                    </Pressable>
+                                    <Pressable className={clsx('picker-option', frequency === 'Yearly' && 'picker-option-active')}
+                                        onPress={() => setFrequency('Yearly')}
+                                    >
+                                        <Text className={clsx('picker-option-text', frequency === 'Yearly' && 'picker-option-text-active')}></Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                            
                         </ScrollView>
                     </Pressable>
                 </Pressable>
