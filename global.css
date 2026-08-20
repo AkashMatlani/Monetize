@@ -292,4 +292,19 @@
   .modal-close-text {
     @apply text-lg font-sans-bold text-primary;
   }
+  .picker-row {
+    @apply flex-row gap-3;
+  }
+  .picker-option {
+    @apply flex-1 items-center rounded-2xl border border-border bg-background py-3;
+  }
+  .picker-option-active {
+    @apply border-accent bg-accent/10;
+  }
+  .picker-option-text {
+    @apply text-sm font-sans-semibold text-muted-foreground;
+  }
+  .picker-option-text-active {
+    @apply text-accent;
+  }
 }
