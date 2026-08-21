@@ -307,4 +307,19 @@
   .picker-option-text-active {
     @apply text-accent;
   }
+  .category-scroll {
+    @apply flex-row flex-wrap gap-2;
+  }
+  .category-chip {
+    @apply rounded-full border border-border bg-background px-4 py-2;
+  }
+  .category-chip-active {
+    @apply border-accent bg-accent/10;
+  }
+  .category-chip-text {
+    @apply text-sm font-sans-semibold text-muted-foreground;
+  }
+  .category-chip-text-active {
+    @apply text-accent;
+  }
 }
