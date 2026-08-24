@@ -175,4 +175,3 @@ const CreateSubscriptionModal = ({ visible, onClose, onSubmit }: CreateSubscript
         </Modal>
     )
 }
-

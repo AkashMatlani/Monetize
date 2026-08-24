@@ -1,21 +1,39 @@
 import ListHeading from '@/components/ListHeading';
 import SubscrptionCard from '@/components/SubscrptionCard';
 import UpcomingSubscrptionCard from '@/components/UpcomingSubscrptionCard';
-import { HOME_SUBSCRIPTIONS, UPCOMING_SUBSCRPTIONS } from '@/constants/data';
 import { icons } from '@/constants/icons';
 import images from '@/constants/images';
 import '@/global.css';
+import { useSubscrptionStore } from '@/lib/subscrptionStore';
 import { formatCurrency } from '@/lib/utills';
 import dayjs from 'dayjs';
-import { styled } from "nativewind";
-import { useState } from 'react';
+import { styled } from 'nativewind';
+import { useMemo, useState } from 'react';
 import { FlatList, Image, Text, View } from 'react-native';
-import { SafeAreaView as RNSafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 
 const SafeAreaView = styled(RNSafeAreaView);
+
 export default function App() {
+  const { subscription, addSubscription } = useSubscrptionStore();
 
   const [expandedSubscrptionId, setExpandedSubscrptionId] = useState<string | null>(null);
+  const upcomingSubscrptions = useMemo(() => {
+    const now = dayjs();
+    const nextWeek = now.add(7, 'days');
+    return subscription.filter(sub =>
+      sub.status === 'active' &&
+      dayjs(sub.renewalDate).isAfter(now) &&
+      dayjs(sub.renewalDate).isBefore(nextWeek)
+    ).sort((a, b) => dayjs(a.renewalDate).diff(dayjs(b.renewalDate)));
+  }, [subscription]);
+
+
+  const handleSubscriptionPress = (item: Subscrption) => {
+    const isExpanding = expandedSubscrptionId !== item.id;
+    setExpandedSubscrptionId((currentId) => (currentId === item.id ? null : item.id));
+
+  }
   return (
     <SafeAreaView className="flex-1 bg-background p-5">
       <FlatList
@@ -23,10 +41,10 @@ export default function App() {
           <>
             <View className='home-header'>
               <View className='home-user'>
-                <Image 
-                source={images.avatar} 
-                className='home-avatar'
-                 />
+                <Image
+                  source={images.avatar}
+                  className='home-avatar'
+                />
                 <Text className='home-user-name'>Akash Matlani</Text>
               </View>
               <Image source={icons.add} className='home-add-icon' />
@@ -42,7 +60,7 @@ export default function App() {
               <ListHeading title="Upcoming" />
 
               <FlatList
-                data={UPCOMING_SUBSCRPTIONS}
+                data={upcomingSubscrptions}
                 renderItem={({ item }) => (<UpcomingSubscrptionCard {...item} />)}
                 keyExtractor={(item) => item.id}
                 horizontal
@@ -54,13 +72,13 @@ export default function App() {
             <ListHeading title="All Subscriptions" />
           </>
         )}
-        data={HOME_SUBSCRIPTIONS}
+        data={subscription}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <SubscrptionCard
-          {...item}
-          expanded={expandedSubscrptionId === item.id}
-          onPress={() => setExpandedSubscrptionId((currentId) => currentId === item.id ? null : item.id)}          />
+            {...item}
+            expanded={expandedSubscrptionId === item.id}
+            onPress={() => handleSubscriptionPress(item)} />
         )}
         extraData={expandedSubscrptionId}
         ItemSeparatorComponent={() => <View className='h-4' />}
