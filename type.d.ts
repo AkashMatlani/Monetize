@@ -35,6 +35,13 @@ declare global {
         onCancelPress?: () => void;
         isCancelling?: boolean;
     }
+
+     interface UpcomingSubscriptionCardProps
+        extends Omit<UpcomingSubscription, "id"> {}
+
+    interface ListHeadingProps {
+        title: string;
+    }
 }
 
 

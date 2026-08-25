@@ -1,3 +1,4 @@
+import CreateSubscriptionModal from "@/components/CreateSubscrptionModal";
 import ListHeading from '@/components/ListHeading';
 import SubscrptionCard from '@/components/SubscrptionCard';
 import UpcomingSubscrptionCard from '@/components/UpcomingSubscrptionCard';
@@ -6,18 +7,20 @@ import images from '@/constants/images';
 import '@/global.css';
 import { useSubscrptionStore } from '@/lib/subscrptionStore';
 import { formatCurrency } from '@/lib/utills';
+import { useUser } from '@clerk/expo';
 import dayjs from 'dayjs';
 import { styled } from 'nativewind';
-import { useMemo, useState } from 'react';
-import { FlatList, Image, Text, View } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { FlatList, Image, Pressable, Text, View } from 'react-native';
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 
 const SafeAreaView = styled(RNSafeAreaView);
 
 export default function App() {
+  const { user } = useUser();
   const { subscription, addSubscription } = useSubscrptionStore();
-
   const [expandedSubscrptionId, setExpandedSubscrptionId] = useState<string | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const upcomingSubscrptions = useMemo(() => {
     const now = dayjs();
     const nextWeek = now.add(7, 'days');
@@ -34,6 +37,13 @@ export default function App() {
     setExpandedSubscrptionId((currentId) => (currentId === item.id ? null : item.id));
 
   }
+
+  const handleCreateSubscription = (newSubscription: Subscrption) => {
+    addSubscription(newSubscription);
+  }
+
+  const displayName = user?.firstName || user?.fullName || user?.emailAddresses[0]?.emailAddress || 'User';
+
   return (
     <SafeAreaView className="flex-1 bg-background p-5">
       <FlatList
@@ -42,13 +52,17 @@ export default function App() {
             <View className='home-header'>
               <View className='home-user'>
                 <Image
-                  source={images.avatar}
+                  source={user?.imageUrl ? { uri: user.imageUrl } : images.avatar}
                   className='home-avatar'
                 />
-                <Text className='home-user-name'>Akash Matlani</Text>
+                <Text className='home-user-name'>{displayName}</Text>
               </View>
-              <Image source={icons.add} className='home-add-icon' />
+
+              <Pressable onPress={() => setIsModalVisible(true)}>
+                <Image source={icons.add} className='home-add-icon' />
+              </Pressable>
             </View>
+
             <View className='home-balance-card'>
               <Text className='home-balance-label'>Balance</Text>
               <View className='home-balance-row'>
@@ -56,6 +70,7 @@ export default function App() {
                 <Text className='home-balance-date'>{dayjs("2026-03-18T09:00:00.000Z").format('MM/DD')}</Text>
               </View>
             </View>
+
             <View className="mb-5">
               <ListHeading title="Upcoming" />
 
@@ -88,6 +103,13 @@ export default function App() {
           <Text className='home-empty-state'>No subscrptions yet.</Text>
         }
       />
+
+      <CreateSubscriptionModal
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        onSubmit={handleCreateSubscription}
+      />
+
     </SafeAreaView>
   );
 }
