@@ -41,22 +41,22 @@ const CreateSubscriptionModal = ({ visible, onClose, onSubmit }: CreateSubscript
     const handleSubmit = () => {
         if (!isValidForm) return;
         const priceValue = Number(price.trim());
-        const now =dayjs();
-        const renewDate = frequency === 'Monthly' ? now.add(1,'month'): now.add(1,'year');
+        const now = dayjs();
+        const renewDate = frequency === 'Monthly' ? now.add(1, 'month') : now.add(1, 'year');
 
-        const newSubscrption:Subscrption={
-            id:`sub-${Date.now()}`,
-            name:name.trim(),
-            price:priceValue,
-            currency:'USD',
+        const newSubscrption: Subscrption = {
+            id: `sub-${Date.now()}`,
+            name: name.trim(),
+            price: priceValue,
+            currency: 'USD',
             frequency,
             category,
-            status:'active',
-            startDate:now.toISOString(),
-            renewalDate:renewDate.toISOString(),
-            icon:icons.plus,
-            billing:frequency,
-            color:CATEGORY_COLORS[category],
+            status: 'active',
+            startDate: now.toISOString(),
+            renewalDate: renewDate.toISOString(),
+            icon: icons.plus,
+            billing: frequency,
+            color: CATEGORY_COLORS[category],
         };
 
         onSubmit(newSubscrption);
@@ -175,3 +175,5 @@ const CreateSubscriptionModal = ({ visible, onClose, onSubmit }: CreateSubscript
         </Modal>
     )
 }
+
+export default CreateSubscriptionModal;
