@@ -1,9 +1,8 @@
 import images from "@/constants/images";
 import { useAuth, useUser } from "@clerk/expo";
-import { Ionicons } from '@expo/vector-icons';
 import { styled } from "nativewind";
 import React from 'react';
-import { Image, Text, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from 'react-native-safe-area-context';
 
 const SafeAreaView = styled(RNSafeAreaView);
@@ -40,7 +39,31 @@ const Settings = () => {
           </View>
         </View>
       </View>
-      <Ionicons name="log-out" size={24} onPress={() => signOut()} />
+
+      {/* Account Section */}
+      <View className="auth-card-sub">
+        <Text className="text-base font-sans-semibold text-Primary mb-3">Account</Text>
+        <View className="gap-2">
+          <View className="flex-row justify-between items-center py-2">
+            <Text className="text-sm font-sans-medium text-muted-foreground">Account ID</Text>
+            <Text className="text-sm font-sans-medium text-primary" numberOfLines={1} ellipsizeMode="tail">
+              {user?.id.substring(0, 20)}...
+            </Text>
+          </View>
+          <View className="flex-row justify-between items-center py-2">
+            <Text className="text-sm font-sans-medium text-muted-foreground">Joined</Text>
+            <Text className="text-sm font-sans-medium text-primary">
+              {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
+            </Text>
+          </View>
+        </View>
+      </View>
+      {/* Sign out Button */}
+      <Pressable className="auth-button bg-destructive"
+        onPress={handleSignout}
+      >
+        <Text className="auth-button-text text-white">Sign Out</Text>
+      </Pressable>
     </SafeAreaView>
   )
 }
