@@ -41,7 +41,7 @@ const Settings = () => {
       </View>
 
       {/* Account Section */}
-      <View className="auth-card-sub">
+      <View className="auth-card mb-5">
         <Text className="text-base font-sans-semibold text-Primary mb-3">Account</Text>
         <View className="gap-2">
           <View className="flex-row justify-between items-center py-2">
