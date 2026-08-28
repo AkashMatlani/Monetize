@@ -7,9 +7,9 @@ The goal of this project is to help users manage recurring subscriptions in one 
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/AkashMatlani/Monetize/master/assets/screenshots/AppStartScreen.png" width="180" height="350"/>
-  <img src="https://raw.githubusercontent.com/AkashMatlani/Monetize/master/assets/screenshots/SignUpScreen.png" width="180" height="350" />
-  <img src="https://raw.githubusercontent.com/AkashMatlani/Monetize/master/assets/screenshots/SignInScreen.png" width="180" height="350" />
+  <img src="./assets/screenshots/AppStartScreen.png" alt="App start screen" width="180" height="350"/>
+  <img src="/assets/screenshots/SignUpScreen.png"  alt="Sign Up screen" width="180" height="350" />
+  <img src="/assets/screenshots/SignInScreen.png" alt="Sign In  screen" width="180" height="350" />
 </p>
 
 ✨ Features
@@ -85,7 +85,7 @@ Expo Go (optional, for testing on a physical device)
 1. Clone the repository
 
 git clone https://github.com/AkashMatlani/Monetize.git
-cd monetize
+cd Monetize
 npm install
 
 2. Install dependencies
