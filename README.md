@@ -1,50 +1,165 @@
-# Welcome to your Expo app 👋
+📱 Subscription Management — React Native App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A modern full-stack subscription management mobile application built with React Native, Expo, TypeScript, NativeWind, Node.js.
 
-## Get started
+The goal of this project is to help users manage recurring subscriptions in one place, track active and inactive services, and receive reminders before upcoming billing dates.
 
-1. Install dependencies
+## 📸 Screenshots
 
-   ```bash
-   npm install
-   ```
+<p align="center">
+  <img src="https://raw.githubusercontent.com/AkashMatlani/Monetize/master/assets/screenshots/AppStartScreen.png" width="180" height="350"/>
+  <img src="https://raw.githubusercontent.com/AkashMatlani/Monetize/master/assets/screenshots/SignUpScreen.png" width="180" height="350" />
+  <img src="https://raw.githubusercontent.com/AkashMatlani/Monetize/master/assets/screenshots/SignInScreen.png" width="180" height="350" />
+</p>
 
-2. Start the app
+✨ Features
 
-   ```bash
-   npx expo start
-   ```
+📊 Subscription Dashboard — View recurring expenses from a centralized dashboard.
 
-In the output, you'll find options to open the app in a
+🔄 Active & Inactive Tracking — Track which subscriptions are currently active and identify unused services.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+🔐 Secure Authentication — User authentication and account management with Clerk.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+🧭 Native Navigation — Smooth navigation designed for iOS and Android.
 
-## Get a fresh project
+💳 Monetization Ready — Designed to support billing and payment workflows.
 
-When you're ready, run:
+🧩 Reusable Architecture — Structured with reusable components and maintainable code patterns.
 
-```bash
-npm run reset-project
-```
+🛠️ Tech Stack
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Frontend & Mobile
 
-## Learn more
+React Native — Cross-platform native mobile development.
 
-To learn more about developing your project with Expo, look at the following resources:
+Expo — Development, routing, and build tooling for React Native.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+TypeScript — Type-safe application development.
 
-## Join the community
+NativeWind — Utility-first styling with Tailwind CSS concepts.
 
-Join our community of developers creating universal apps.
+Backend & Database
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Node.js — JavaScript runtime for backend services.
+
+Express.js — Backend API and routing framework.
+
+Authentication, Analytics & Tools
+
+Clerk — Authentication and user management.
+
+CodeRabbit — AI-assisted code review.
+
+📁 Project Goals
+
+This project is being developed to provide a simple and reliable way for users to:
+
+Add and manage recurring subscriptions.
+
+Monitor monthly and recurring expenses.
+
+Separate active and inactive subscriptions.
+
+Receive reminders before billing dates.
+
+Keep subscription information organized in one application.
+
+Build a scalable full-stack mobile application architecture.
+
+🚀 Getting Started
+
+Prerequisites
+
+Make sure you have the following installed:
+
+Git
+
+Node.js
+
+npm
+
+Expo CLI / Expo development environment
+
+Expo Go (optional, for testing on a physical device)
+
+1. Clone the repository
+
+git clone https://github.com/AkashMatlani/Monetize.git
+cd monetize
+npm install
+
+2. Install dependencies
+
+npm install
+
+3. Start the Expo development server
+
+npx expo start
+
+You can then use the following Expo shortcuts:
+
+a — Open Android
+
+i — Open iOS Simulator
+
+w — Open Web
+
+r — Reload
+
+m — Open the development menu
+
+You can also scan the QR code using Expo Go on your phone.
+
+🔐 Environment Variables
+
+Create a .env file in the root directory:
+
+EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=
+
+▶️ Running the Project
+
+After configuring your environment variables, start the development server:
+
+npm run dev
+
+If your project uses the standard Expo command instead:
+
+npx expo start
+
+🧱 Architecture
+
+The project follows a full-stack architecture:
+
+React Native / Expo
+│
+▼
+Mobile UI
+│
+▼
+Express API
+│
+▼
+Node.js
+│
+▼
+MongoDB
+
+Authentication is handled through Clerk, while PostHog is used for product analytics.
+
+🗺️ Roadmap
+
+Initial React Native / Expo setup
+
+TypeScript configuration
+
+Authentication integration
+
+Subscription dashboard foundation
+
+Complete subscription CRUD functionality
+
+Expense analytics
+
+Subscription categories
+
+Payment/billing integration

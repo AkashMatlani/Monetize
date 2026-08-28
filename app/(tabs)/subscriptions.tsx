@@ -7,16 +7,15 @@ import { SafeAreaView as RNSafeAreaView } from 'react-native-safe-area-context';
 
 const SafeAreaView = styled(RNSafeAreaView);
 
-const { subscription } = useSubscrptionStore();
-const [serachQuery, setSearchQuery] = useState('');
-const [expandedId, setExpandedId] = useState<string | null>(null);
-
-const fliterSubscrptions = subscription.filter((subscription) =>
-  subscription.name.toLocaleLowerCase().includes(serachQuery.toLowerCase()) ||
-  subscription.category?.toLocaleLowerCase().includes(serachQuery.toLowerCase()) ||
-  subscription.plan?.toLowerCase().includes(serachQuery.toLowerCase()));
-
 const Subscriptions = () => {
+  const { subscription } = useSubscrptionStore();
+  const [serachQuery, setSearchQuery] = useState('');
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const fliterSubscrptions = subscription.filter((subscription) =>
+    subscription.name.toLocaleLowerCase().includes(serachQuery.toLowerCase()) ||
+    subscription.category?.toLocaleLowerCase().includes(serachQuery.toLowerCase()) ||
+    subscription.plan?.toLowerCase().includes(serachQuery.toLowerCase()));
   return (
     <SafeAreaView className="flex-1 bg-background">
       <FlatList
@@ -37,7 +36,7 @@ const Subscriptions = () => {
             expanded={expandedId === item.id}
             onPress={() => setExpandedId(expandedId === item.id ? null : item.id)} />
         )}
-        contentContainerStyle={{paddingHorizontal:20,paddingBottom:20,gap:12}}
+        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 20, gap: 12 }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
