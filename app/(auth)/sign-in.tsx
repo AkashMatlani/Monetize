@@ -1,5 +1,5 @@
 import { useSignIn } from '@clerk/expo';
-import { Href, Link, useRouter } from 'expo-router';
+import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -17,9 +17,7 @@ const SignIn = () => {
   const [emailTouched, setEmailTouched] = useState(false);
   const [passWordTouched, setPassWordTouched] = useState(false);
   const formValid = emailAddress.length > 0 && password.length > 0 && emailValid;
-  const router = useRouter();
   const [code, setCode] = useState('');
-
 
   const handleSubmit = async () => {
     if (!formValid) return;
@@ -35,28 +33,7 @@ const SignIn = () => {
     }
 
     if (signIn.status === "complete") {
-      await signIn.finalize({
-        navigate: ({ session, decorateUrl }) => {
-          if (session?.currentTask) {
-            console.log(session?.currentTask);
-            return;
-          }
-
-          const url = decorateUrl("/(tabs)");
-
-          if (url.startsWith('http')) {
-            if (typeof window !== "undefined" && window.location) {
-              window.location.href = url;
-            }
-            else {
-              router.replace("/(tabs)" as Href)
-            }
-          }
-          else {
-            router.replace(url as Href)
-          }
-        }
-      });
+      await signIn.finalize();
     }
 
     else if (signIn.status === "needs_second_factor") {
@@ -84,37 +61,15 @@ const SignIn = () => {
     await signIn.mfa.verifyEmailCode({ code })
 
     if (signIn.status === "complete") {
-      await signIn.finalize({
-        navigate: ({ session, decorateUrl }) => {
-          if (session?.currentTask) {
-            console.log(session?.currentTask);
-            return;
-          }
-
-          const url = decorateUrl('/(tabs)');
-
-          if (url.startsWith('http')) {
-            //only window.location on web platform
-            if (typeof window !== "undefined" && window.location) {
-              window.location.href = url;
-            }
-            else {
-              router.replace('/(tabs)' as Href)
-            }
-          }
-          else {
-            router.replace(url as Href)
-          }
-        }
-      });
+       await signIn.finalize();
     }
     else {
       console.error("Sign-in attempt not complete:", signIn)
     }
   };
 
-  //show verification screen if client trust is needed
   if (signIn.status === "needs_client_trust") {
+    //show verification screen if client trust is needed
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#fff9e3' }}>
         <KeyboardAvoidingView
