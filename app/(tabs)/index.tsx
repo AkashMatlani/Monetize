@@ -54,12 +54,19 @@ export default function App() {
                 <Image
                   source={user?.imageUrl ? { uri: user.imageUrl } : images.avatar}
                   className='home-avatar'
+                  resizeMode="cover"
                 />
-                <Text className='home-user-name'>{displayName}</Text>
+                <Text className='home-user-name' numberOfLines={1}>{displayName}
+                </Text>
               </View>
 
-              <Pressable onPress={() => setIsModalVisible(true)}>
-                <Image source={icons.add} className='home-add-icon' />
+              <Pressable
+                onPress={() => setIsModalVisible(true)}
+                className="p-2">
+                <Image
+                  source={icons.add}
+                  className='home-add-icon'
+                  resizeMode="contain" />
               </Pressable>
             </View>
 
