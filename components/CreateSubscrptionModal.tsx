@@ -140,7 +140,7 @@ const CreateSubscriptionModal = ({ visible, onClose, onSubmit }: CreateSubscript
                                     <Pressable className={clsx('picker-option', frequency === 'Yearly' && 'picker-option-active')}
                                         onPress={() => setFrequency('Yearly')}
                                     >
-                                        <Text className={clsx('picker-option-text', frequency === 'Yearly' && 'picker-option-text-active')}></Text>
+                                        <Text className={clsx('picker-option-text', frequency === 'Yearly' && 'picker-option-text-active')}>Yearly</Text>
                                     </Pressable>
                                 </View>
                             </View>
