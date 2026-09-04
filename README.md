@@ -14,7 +14,10 @@ The goal of this project is to help users manage recurring subscriptions in one 
   <img src="./assets/screenshots/HomeScreen.png" alt="Home screen" width="180" height="350"/>
   <img src="./assets/screenshots/NewSubscription.png" alt="New Subscription" width="180" height="350"/>
   <img src="./assets/screenshots/SubscriptionDetail.png" alt="Subscription Detail" width="180" height="350"/>
-  
+  <img src="./assets/screenshots/Subscription.png" alt="Subscription" width="180" height="350"/>
+  <img src="./assets/screenshots/SearchSubscription.png" alt="Search Subscription" width="180" height="350"/>
+  <img src="./assets/screenshots/SearchSubscriptionDetail.png" alt="Search Subscription Detail" width="180" height="350"/>
+   
 </p>
 
 ## ✨ Features
